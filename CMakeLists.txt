@@ -51,10 +51,31 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         PUBLIC_HEADER "${MPRTP_HEADERS}"
         )
 
-# Export litehtml includes.
+# Export MPRTP includes.
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_include_directories(${PROJECT_NAME} PRIVATE include/${PROJECT_NAME})
 
+add_executable(server examples/server.cpp)
+set_target_properties(server PROPERTIES
+    CXX_STANDARD 11
+    C_STANDARD 99
+        )
+target_link_libraries(
+        server
+        ${PROJECT_NAME}
+)
+target_include_directories(server PRIVATE include)
+
+add_executable(client examples/client.cpp)
+set_target_properties(client PROPERTIES
+        CXX_STANDARD 11
+        C_STANDARD 99
+        )
+target_link_libraries(
+        client
+        ${PROJECT_NAME}
+)
+target_include_directories(client PRIVATE include)
